@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    function DmCurrying(fn){
+      if(typeof fn !== 'function'){
+        throw new Error('fn must be a function !')
+      }
+      function curryFn(...args){
+        if(args.length >= fn.length){
+          fn.apply(this,args)
+        }
+        else{
+          return function curryFn1(...newArgs){
+            return curryFn.apply(this,args.concat(newArgs))
+          }
+        }
+      }
+      return curryFn
+    }
+
+    const addNum = (num1,num2) => {
+      console.log(num1 + num2)
+      return num1 + num2
+    }
+    const DmAddNum = DmCurrying(addNum)
+    addNum(10,20)
+    DmAddNum(20,30)
+
+    const debugLog = (title,type,time) => {
+      console.log(`[title]:[${title}],[type]:[${type}],[time]:[${time}]`)
+    }
+    const dmDebugLog = DmCurrying(debugLog)
+    debugLog('用户名不能为空','WRANING',Date.now())
+    dmDebugLog('服务器未响应')('ERROR')(Date.now())
+  </script>
+</body>
+</html>
