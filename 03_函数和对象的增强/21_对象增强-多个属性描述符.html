@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var obj = {
+      name:'aaa',
+      age:18
+    }
+
+    // Object.defineProperty(obj, "name", {})
+    // Object.defineProperty(obj, "age", {})
+
+    // 新增的方法
+    Object.defineProperties(obj,{
+      name:{
+        configurable:false,
+        writable:false,
+      },
+      age:{
+        configurable:true,
+        writable:true,
+        enumerable:false
+      }
+    })
+
+    console.log(Object.keys(obj))
+    obj.name = 'bbb'
+    obj.age = 19
+    console.log(obj)
+    // delete obj.name
+    // delete obj.age
+    // console.log(obj)
+  </script>
+</body>
+</html>
