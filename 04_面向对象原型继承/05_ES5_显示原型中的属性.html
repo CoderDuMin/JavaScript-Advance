@@ -9,25 +9,26 @@
 <body>
   
   <script>
-        // 非常重要的属性: constructor, 指向Person函数对象
-        function Person() {
+    // 非常重要的属性: constructor, 指向Person函数对象
+    function Person() {
 
-        }
+    }
 
-        // 1.对constructor在prototype上的验证
-        var PersonPrototype = Person.prototype
-        console.log(PersonPrototype)
-        console.log(PersonPrototype.constructor)
-        console.log(PersonPrototype.constructor === Person)
+    // 1.对constructor在prototype上的验证
+    var PersonPrototype = Person.prototype
+    console.log(PersonPrototype)
+    console.log(PersonPrototype.constructor)
+    console.log(PersonPrototype.constructor === Person)
 
-        console.log(Person.name)
-        console.log(PersonPrototype.constructor.name)
+    console.log(Person.name)
+    console.log(PersonPrototype.constructor.name)
 
-        // 2.实例对象p
-        var p = new Person()
-        console.log(p.__proto__.constructor)
-        console.log(p.__proto__.constructor.name)
+    // 2.实例对象p
+    var p = new Person()
+    console.log(p.__proto__.constructor)
+    console.log(p.__proto__.constructor.name)
 
   </script>
+
 </body>
 </html>
