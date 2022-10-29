@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    function createObject(o){
+      function F(){}
+      F.prototype = o
+      return new F()
+    }
+    // 继承方法
+    function inherit(SubType,SuperType){
+      var obj = createObject(SuperType.prototype)
+      Object.defineProperty(obj,'constructor',{
+        enumerable:false,
+        writable:true,
+        configurable:true,
+        value:SubType
+      })
+      SubType.prototype = obj
+    }
+
+    // 定义Person构造函数(类)
+    function Person(name,age,height){
+      this.name = name 
+      this.height = height
+      this.age = age
+    }
+    Person.prototype.running = function(){console.log('running')}
+    Person.prototype.eating = function(){console.log('eating')}
+
+    // 定义学生类
+    function Student(name,age,height,sno){
+      // 重复代码
+      // this.name = name 
+      // this.height = height
+      // this.age = age
+
+      // 借用Person构造函数实现
+      Person.apply(this,[name,age,height])
+
+      this.sno = sno
+    }
+    
+    // 这段代码会导致执行两次Person,并且原型上会多出一些属性
+    // var p = new Person('aa',12,1.66)
+    // Student.prototype = p
+
+    // 方案一 存在兼容性问题
+    // var obj = {}
+    // Object.setPrototypeOf(obj,Person.prototype)
+    // Student.prototype = obj
+
+    // 方案二
+    // function F(){}
+    // F.prototype = Person.prototype
+    // Student.prototype = new F()
+
+    // 方案3 兼容性
+    // var obj = Object.create(Person.prototype)
+    // Student.prototype = obj
+
+    inherit(Student,Person)
+
+    Student.prototype.studying = function(){console.log('studying')}
+
+    var stu1 = new Student('haha',18,1.67,1)
+    var stu2 = new Student('klebe',19,1.77,2)
+    console.log(stu1)
+
+    stu1.running()
+    stu2.eating()
+    stu2.studying()
+
+
+  </script>
+
+</body>
+</html>

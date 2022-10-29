@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    // 定义Person构造函数(类)
+    function Person(name,age,height){
+      this.name = name 
+      this.height = height
+      this.age = age
+    }
+    Person.prototype.running = function(){console.log('running')}
+    Person.prototype.eating = function(){console.log('eating')}
+
+    // 定义学生类
+    function Student(name,age,height,sno){
+      this.name = name 
+      this.height = height
+      this.age = age
+      this.sno = sno
+    }
+    
+    var p = new Person('aa',12,1.66)
+    Student.prototype = p
+    Student.prototype.studying = function(){console.log('studying')}
+
+    var stu1 = new Student('haha',18,1.67,1)
+    var stu2 = new Student('klebe',19,1.77,2)
+
+    stu1.running()
+    stu2.eating()
+    stu2.studying()
+
+    
+
+  </script>
+
+</body>
+</html>
