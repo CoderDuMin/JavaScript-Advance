@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    function foo(name,age,from,address){
+      console.log(this,name,age,from,address)
+    }
+
+    foo('dumin',18,'china','fujian')
+    foo.call({name:'xxhh'},'dumin',18,'china','fujian')
+    foo.call({name:'xxhh'},['dumin',18,'china','fujian'])
+
+    // 手动实现call函数
+    Function.prototype.dmcall = function(thisArg,...args){
+      thisArg = thisArg === null || thisArg === undefined ? window : Object(thisArg)
+      Object.defineProperty(thisArg,'dmfn',{
+        configurable:true,
+        value:this
+      })
+      thisArg.dmfn(...args)
+    }
+    foo.dmcall({name:'dmcall'},'dumin',18,'china','fujian')
+
+    // 手动实现apply函数
+    Function.prototype.dmapply = function(thisArg,args){
+      thisArg = thisArg === null || thisArg === undefined ? window : Object(thisArg)
+      if(!(args instanceof Array)){
+        throw new Error('args must be Array')
+      }
+      Object.defineProperty(thisArg,'dmfn',{
+        configurable:true,
+        value:this
+      })
+      thisArg.dmfn(...args)
+    }
+    foo.dmapply({name:'dmapply'},['dumin',18,'china','fujian'])
+
+    // 手动实现bind函数
+    Function.prototype.dmbind = function(thisArg,...args){
+      thisArg = thisArg === null || thisArg === undefined ? window : Object(thisArg)
+      Object.defineProperty(thisArg,'dmfn',{
+        configurable:true,
+        value:this
+      })
+      return (...newArgs) => {
+        thisArg.dmfn(...args,...newArgs)
+      }
+    }
+    var dmfoo = foo.dmbind({name:'dmbind'},'dumin',16)
+    dmfoo('japan','tokyo')
+  </script>
+</body>
+</html>

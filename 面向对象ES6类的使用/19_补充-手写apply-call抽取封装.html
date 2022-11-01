@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    // new Function()
+    // foo.__proto__ === Function.prototype
+    function foo(name, age) {
+      console.log(this, name, age)
+    }
+
+    // foo函数可以通过apply/call
+    // foo.apply("aaa", ["wdm", 18])
+    // foo.call("bbb", "kobe", 30)
+
+    // 1.封装思想
+    // 1.1.封装到独立的函数中
+    function execFn(thisArg, otherArgs, fn) {
+      // 1.获取thisArg, 并且确保是一个对象类型
+      thisArg = (thisArg === null || thisArg === undefined)? window: Object(thisArg)
+
+      // thisArg.fn = this
+      Object.defineProperty(thisArg, "fn", {
+        enumerable: false,
+        configurable: true,
+        value: fn
+      })
+
+      // 执行代码
+      thisArg.fn(...otherArgs)
+
+      delete thisArg.fn
+    }
+
+    // 1.2. 封装原型中
+    Function.prototype.dmexec = function(thisArg, otherArgs) {
+      // 1.获取thisArg, 并且确保是一个对象类型
+      thisArg = (thisArg === null || thisArg === undefined)? window: Object(thisArg)
+
+      // thisArg.fn = this
+      Object.defineProperty(thisArg, "fn", {
+        enumerable: false,
+        configurable: true,
+        value: this
+      })
+      thisArg.fn(...otherArgs)
+
+      delete thisArg.fn
+    }
+
+
+    // 1.给函数对象添加方法: dmapply
+    Function.prototype.dmapply = function(thisArg, otherArgs) {
+      this.dmexec(thisArg, otherArgs)
+    }
+    // 2.给函数对象添加方法: dmcall
+    Function.prototype.dmcall = function(thisArg, ...otherArgs) {
+      this.dmexec(thisArg, otherArgs)
+    }
+
+    foo.dmapply({ name: "wdm" }, ["james", 25])
+    foo.dmapply(123, ["wdm", 18])
+    foo.dmapply(null, ["kobe", 30])
+    
+    foo.dmcall({ name: "wdm" }, "james", 25)
+    foo.dmcall(123, "wdm", 18)
+    foo.dmcall(null, "kobe", 30)
+
+
+  </script>
+
+</body>
+</html>
