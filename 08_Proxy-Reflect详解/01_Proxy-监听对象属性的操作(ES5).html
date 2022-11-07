@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <h2 class="name"></h2>
+
+  <script>
+
+    const obj = {
+      name: "dumin",
+      age: 18,
+      height: 1.88
+    }
+
+    // 需求: 监听对象属性的所有操作
+    // 监听属性的操作
+    // 1.针对一个属性
+    // let _name = obj.name
+    // Object.defineProperty(obj,'name',{
+    //   get:function(){
+    //     console.log('监听,属性name的get')
+    //     return _name
+    //   },
+    //   set:function(newVal){
+    //     console.log('监听,属性name的set',newVal)
+    //     _name = newVal
+    //   }
+    // })
+
+    // console.log(obj.name)
+    // obj.name = 'aaa'
+    // console.log(obj.name)
+
+    // 2.针对多个属性
+    let keys = Object.keys(obj)
+    keys.forEach(key => {
+      let value = obj[key]
+      Object.defineProperty(obj,key,{
+          get:function(){
+            console.log(`监听,属性${key}的get`)
+            return value
+          },
+          set:function(newVal){
+            console.log(`监听,属性${key}的set`,newVal)
+            value = newVal
+          }
+      })
+    })
+
+    console.log(obj.name)
+    obj.name = 'kobu'
+    console.log(obj.name)
+
+    console.log(obj.age)
+    obj.age = 28
+    console.log(obj.age)
+
+    // 什么是响应式?
+    // const nameEl = document.querySelector(".name")
+    // nameEl.textContent = obj.name
+    // obj.name = "kobe"
+    // obj.name = "james"
+
+
+
+
+
+
+
+  </script>
+
+</body>
+</html>
