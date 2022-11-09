@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    const promise = new Promise((resolve,reject)=>{
+      resolve('aaaa')
+    })
+
+    promise.then(res => {
+      console.log('第一次then的结果',res)
+      return 'bbbb'
+      // throw new Error('第一次then的reject')
+    }).then(res=>{
+      console.log('第2次then的结果',res)
+      return new Promise((resolve)=>{resolve('返回Promise cccc')})
+    }).then(res=>{
+      console.log('第3次then的结果',res)
+      return {
+        name:'aaa',
+        then:(resolve)=>{
+          resolve('thenable对象dddd')
+        }
+      }
+    }).then(res => {
+      console.log('第4次then的结果',res)
+    }).catch(err=>{
+      console.log('catch',err)
+    })
+   
+  </script>
+
+</body>
+</html>
