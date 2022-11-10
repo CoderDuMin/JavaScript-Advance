@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    class Person {
+      constructor(name, age, height, games) {
+        this.name = name
+        this.age = age
+        this.height = height
+        this.games = games
+      }
+
+      // 实例方法
+      [Symbol.iterator](){
+        let index = 0
+        return {
+          next:()=>{
+            if(index < this.games.length){
+              return {done:false,value:this.games[index++]}
+            }else{
+              return {done:true}
+            }
+          },
+          return(){
+            console.log('迭代器中断')
+            return {done:true}
+          }
+        }
+      }
+    }
+
+    const p1 = new Person('督名',18,1.78,['黑暗之魂','女神异闻录5','求生之路','艾尔登法环'])
+    const p2 = new Person('异乡人',18,1.78,['王者荣耀','原神','仁王','巫师3'])
+
+    for (const item of p1) {
+      if(item == '求生之路') break;
+      console.log(item)
+    }
+    for (const item of p2) {
+      console.log(item)
+    }
+
+  </script>
+
+</body>
+</html>
