@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    // 1.对之前的代码进行重构(用生成器函数)
+    const games = ['take two','dark souls','elden ring']
+    const names = ['xiaowan','xiaofang','xiaoxue']
+    
+    // 改为生成器 封装一个函数,为数组创建迭代器 
+    function* createArrayGenerator(arr){
+      for(let i=0;i<arr.length;i++){
+        yield arr[i]
+      }
+    }
+
+    // const namesIterator = createArrayGenerator(names)
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+
+    // const gamesIterator = createArrayGenerator(games)
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+
+    // 2.生成器函数, 可以生成某个范围的值
+    // [3, 9)
+
+    function* createNumGenerator(start,end){
+      for(let i=start;i<end;i++){
+        yield i
+      }
+    }
+    const numGenerator = createNumGenerator(3,8)
+    console.log(numGenerator.next())
+    console.log(numGenerator.next())
+    console.log(numGenerator.next())
+    console.log(numGenerator.next())
+    console.log(numGenerator.next())
+    console.log(numGenerator.next())
+    console.log(numGenerator.next())
+
+  </script>
+
+</body>
+</html>

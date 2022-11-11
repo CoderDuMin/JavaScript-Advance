@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    // 1.yield*替换之前的方案
+    const games = ['take two','dark souls','elden ring']
+    const names = ['xiaowan','xiaofang','xiaoxue']
+    
+    function* createArrayGenerator(arr){
+      yield* arr
+    }
+
+    // const namesIterator = createArrayGenerator(names)
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+
+    // const gamesIterator = createArrayGenerator(games)
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+    // console.log(gamesIterator.next())
+
+    // 2.yield替换类中的实现
+    class Person {
+      constructor(name, age, height, games) {
+        this.name = name
+        this.age = age
+        this.height = height
+        this.games = games
+      }
+
+      // 实例方法
+      *[Symbol.iterator](){
+        yield* this.games
+      }
+    }
+
+    const p1 = new Person('督名',18,1.78,['黑暗之魂','女神异闻录5','求生之路','艾尔登法环'])
+    const p2 = new Person('异乡人',18,1.78,['王者荣耀','原神','仁王','巫师3'])
+    // for (const item of p1) {
+    //   console.log(item)
+    // }
+    // for (const item of p2) {
+    //   console.log(item)
+    // }
+
+    const p1Iterator = p1[Symbol.iterator]()
+    console.log(p1Iterator.next())
+    console.log(p1Iterator.next())
+    console.log(p1Iterator.next())
+    console.log(p1Iterator.next())
+
+  </script>
+
+</body>
+</html>
