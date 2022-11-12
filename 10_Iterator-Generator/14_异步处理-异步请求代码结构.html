@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    // 封装请求的方法: url -> promise(result)
+    function requestData(url) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(url)
+        }, 1500)
+      })
+    }
+
+    // 1.发送一次网络请求
+    // requestData("dumin").then(res => {
+    //   console.log("res:", res)
+    // })
+
+    /*
+      需求: 
+        1.发送一次网络请求, 等到这次网络请求的结果
+        2.发送第二次网络请求, 等待这次网络请求的结果
+        3.发送第三次网络请求, 等待这次网络请求的结果
+    */
+    // 方式一: 层层嵌套(回调地狱 callback hell)
+    // function getData(){
+    //   requestData('dumin').then(res =>{
+    //     console.log('发送一次网络请求',res)
+    //     requestData(res+'xxhh').then(res=>{
+    //       console.log('发送2次网络请求',res)
+    //       requestData(res+'dmdm').then(res=>{
+    //         console.log('发送3次网络请求',res)
+    //       })
+    //     })
+    //   })
+    // }
+    // getData()
+
+    // 方式二: 使用Promise进行重构(解决回调地狱)
+    // 链式调用
+      // function getData(){
+      //   requestData('dumin').then(res=>{
+      //     console.log('发送一次网络请求',res)
+      //     return requestData(res+'cchh')
+      //   }).then(res =>{
+      //     console.log('发送2次网络请求',res)
+      //     return requestData(res+'dududu')
+      //   }).then(res=>{
+      //     console.log('发送3次网络请求',res)
+      //   })
+      // }
+      // getData()
+
+    // 方式三: 最终代码
+    // function* getData(){
+    //   const res1 = yield requestData('dumin')
+    //   console.log('发送一次网络请求res1',res1)
+    //   const res2 = yield requestData(res1+'cchh')
+    //   console.log('发送一次网络请求res2',res2)
+    //   const res3 = yield requestData(res2+'yihamin')
+    //   console.log('发送一次网络请求res3',res3)
+    // }
+    // const generator = getData()
+    // generator.next().value.then(res=>{
+    //   generator.next(res).value.then(res=>{
+    //     generator.next(res).value.then(res =>{
+    //       generator.next()
+    //     })
+    //   })
+    // })
+
+    // 方式四: async/await的解决方案
+    async function getData(){
+      console.log('getdata')
+      const res1 = await requestData('dumin')
+      console.log('发送一次网络请求res1',res1)
+      const res2 = await requestData(res1+'cchh')
+      console.log('发送一次网络请求res2',res2)
+      const res3 = await requestData(res2 +'yhm')
+      console.log('发送一次网络请求res3',res3)
+    }
+    getData()
+    console.log('------------')
+
+  </script>
+
+</body>
+</html>
