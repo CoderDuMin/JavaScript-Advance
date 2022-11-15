@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text">
+  <button>搜索</button>
+  
+  <script>
+    function dmthrottle(fn,interval,{heading=true,trailing=false}={}){
+      let startTime = 0
+      let timer = null
+      const _throttle = function(...args){
+        return new Promise((resolve,reject)=>{
+          try {
+            let nowTime = new Date().getTime()
+            if(!heading && startTime === 0){
+              startTime = nowTime
+            }
+            let waitTime = interval - (nowTime - startTime)
+            if(waitTime <= 0){
+              if(timer)clearTimeout(timer);
+              const res = fn.apply(this,args)
+              resolve(res)
+              startTime = nowTime
+            }
+            if(trailing && waitTime>0){
+              if(timer)clearTimeout(timer);
+              timer = setTimeout(()=>{
+                const res = fn.apply(this,args)
+                resolve(res)
+                startTime = new Date().getTime()
+                timer = null
+              },waitTime)
+            }
+          } catch (error) {
+            reject(error)
+          }
+        })
+      }
+
+      _throttle.cancel = function(){
+        if(timer)clearTimeout(timer)
+        startTime = 0
+        timer = null
+      }
+      return _throttle
+    }
+  </script>
+  <script>
+    
+    const input = document.querySelector('input')
+    const searchBtn = document.querySelector('button')
+
+    const throttleFn = dmthrottle(function(e){
+      console.log('本次的值',this.value)
+    },3000,{heading:true,trailing:true})
+    input.oninput = throttleFn
+
+    searchBtn.onclick = throttleFn.cancel
+  </script>
+</body>
+</html>

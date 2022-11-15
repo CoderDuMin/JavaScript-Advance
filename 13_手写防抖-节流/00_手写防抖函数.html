@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>搜索</button>
+  <input type="text" id="input">
+  <button id="calcelBtn">取消</button>
+
+  <script>
+    function dmDebounce(fn,delay,immediate=false){
+      let timer = null
+      let isInvoke = false
+      const _debounce = function(...args){
+        return new Promise((resolve,reject)=>{
+          let res;
+          timer && clearTimeout(timer)
+          if(immediate && !isInvoke){
+            res = fn.apply(this,args)
+            resolve(res)
+            isInvoke = true
+            return;
+          }
+          timer = setTimeout(()=>{
+            res = fn.apply(this,args)
+            resolve(res)
+            timer = null
+            isInvoke = false
+          },delay)
+        })
+      }
+      _debounce.cancel = function(){
+        timer&&clearTimeout(timer)
+        timer = null
+      }
+      return _debounce
+    }
+    const input = document.querySelector('#input') 
+    const cancelBtn = document.querySelector('#calcelBtn')
+    // input.oninput = function(){
+    //   console.log('input输入',this.value)
+    // } 
+    let count = 0
+
+    let debounceFn = dmDebounce(function(e){
+      console.log('input输入',count++,this.value,e)
+    },3000,true)
+    input.oninput = debounceFn
+    cancelBtn.onclick = function(){
+      debounceFn.cancel()
+    }
+
+
+    // input.oninput = deFN
+    // console.log('defn',deFN,input.oninput)
+
+    function getInfo(name,age,height){
+      console.log('获取信息',name,age,height)
+      return '结果'+name+age+height
+    }
+
+    let fn1 = dmDebounce(getInfo,3000)
+    fn1('督名',16,1.88).then(res=>{
+      console.log(res)
+    })
+    fn1('督名',16,1.88).then(res=>{
+      console.log(res)
+    })
+    fn1('督名',16,1.88).then(res=>{
+      console.log(res)
+    })
+  </script>
+</body>
+</html>
