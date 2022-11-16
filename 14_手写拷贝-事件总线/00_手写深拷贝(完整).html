@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    function isObject(target){
+      return (target !== null) && (typeof target === "object")
+    }
+    function deepCopy(originValue){
+      if(!isObject(originValue)){
+        return originValue
+      }
+      if(typeof originValue ==="function"){
+        return originValue
+      }
+      if(originValue instanceof Set){
+        let newSet = new Set()
+        for(const item of originValue){
+          newSet.add(deepCopy(item))
+        }
+        return newSet
+      }
+      let newObj = Array.isArray(originValue) ? [] : {}
+      for(const key in originValue){
+        newObj[key] = deepCopy(originValue[key])
+      }
+      const symbolKeys = Object.getOwnPropertySymbols(originValue)
+      for(const key of symbolKeys){
+        newObj[Symbol(key.description)] = deepCopy(originValue[key])
+      }
+      return newObj
+
+    }
+
+    let mySet = new Set(['aaa','bbb','ccc'])
+
+    let info = {
+      name:'dumin',
+      age:18,
+      friend:{
+        name:'yihamin',
+        age:19,
+      },
+      hobby:['篮球','足球','橄榄球'],
+      studying(){
+        console.log('学习')
+      },
+      set:mySet,
+      [Symbol('aa')]:'aaa',
+    }
+    // info.self = info
+
+    let info1 = deepCopy(info)
+
+    console.log(info1.friend.name,info1)
+    info1.friend.name='yihamin1'
+    console.log(info.friend.name,info)
+    console.log(info.friend === info1.friend)
+  </script>
+</body>
+</html>

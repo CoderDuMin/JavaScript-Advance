@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>发送</button>
+
+  <script>
+    class EventBus{
+      constructor(){
+        this.eventFns = {}
+      }
+      on(eventName,fn){
+        if(!this.eventFns[eventName]){
+          this.eventFns[eventName] = []
+        }
+        this.eventFns[eventName].push(fn)
+      }
+      off(eventName,fn){
+        if(this.eventFns[eventName]){
+          let index = this.eventFns[eventName].findIndex(item => item === fn)
+          if(index !== -1){
+            this.eventFns[eventName].splice(index,1)
+          }
+        }
+      }
+      emit(eventName,...args){
+        if(this.eventFns[eventName]){
+          for(let fn of this.eventFns[eventName]){
+            fn(...args)
+          }
+        }
+      }
+    }
+
+    const btn = document.querySelector('button')
+    let ebus = new EventBus()
+
+    btn.onclick = function(){
+      console.log('监听按钮自身点击事件')
+      ebus.emit('btnClick','xxhh',18)
+    }
+
+    ebus.on('btnClick',(name,age)=>{
+      console.log('事件总线监听btnClick事件01',name,age)
+    })
+    const fn2 = ()=>{
+      console.log('事件总线监听btnClick事件02')
+    }
+    ebus.on('btnClick',fn2)
+
+    setTimeout(()=>{
+      ebus.off('btnClick',fn2)
+    },5000)
+
+  </script>
+</body>
+</html>
