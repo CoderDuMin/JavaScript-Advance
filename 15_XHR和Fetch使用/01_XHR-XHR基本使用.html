@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 1.新建xhr对象
+    const xhr = new XMLHttpRequest()
+    // 2.监听xhr状态改变
+    xhr.onreadystatechange = function(){
+      console.log('readyState',xhr.readyState,XMLHttpRequest.DONE)
+      if(xhr.readyState !== XMLHttpRequest.DONE) return 
+      console.log(JSON.parse(xhr.response))
+    }
+    // 3.xhr对象配置
+    xhr.open('get','http://1.117.247.44:5502/banner')
+    // 4.发送请求
+    xhr.send()
+
+  </script>
+</body>
+</html>
